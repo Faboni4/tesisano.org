@@ -4,8 +4,34 @@ paths:
 collections_config:
   pages:
     path: ''
+    glob:
+      -
+      -
     icon: wysiwyg
     disable_url: false
+    _editables:
+      text:
+        allow_custom_markup: true
+        remove_custom_markup: true
+        bold: true
+        copyformatting: true
+        italic: true
+        link: true
+        paths:
+          uploads:
+          uploads_filename:
+          uploads_use_relative_path:
+          static:
+          dam_uploads:
+          dam_uploads_filename:
+          dam_static:
+        redo: true
+        removeformat: true
+        strike:
+        subscript:
+        superscript:
+        underline:
+        undo: true
     disable_add: false
     disable_add_folder: false
     disable_file_actions: false

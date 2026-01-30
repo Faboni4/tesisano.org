@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Tesi & Sano</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Outfit:wght@400;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body data-page="contact">
+
+    <!-- Navigation -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo">Tesi & Sano</a>
+            <div class="menu-toggle">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About the Series</a>
+                <a href="characters.html">Characters</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="team.html">Team</a>
+                <a href="contact.html" class="active">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Header Section -->
+    <section class="section" style="background-color: #F3E5F5;">
+        <div class="container text-center">
+            <h1 class="section-title">Get in Touch</h1>
+            <p style="max-width: 700px; margin: 0 auto;">Interested in collaborating? Have questions? We'd love to hear
+                from you.</p>
+        </div>
+    </section>
+
+    <!-- Contact Form & Info -->
+    <section class="section">
+        <div class="container">
+            <div class="contact-form">
+                <form action="#" method="POST"
+                    onsubmit="event.preventDefault(); alert('This is a demo form. Thank you for your message!');">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required placeholder="Your Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" required placeholder="How can we help?"></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="text-center mt-md">
+                <p>Or email us directly at: <strong>hello@tesiandsano.com</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div style="font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem;">Tesi & Sano</div>
+            <p>© 2024 Tesi & Sano Series. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

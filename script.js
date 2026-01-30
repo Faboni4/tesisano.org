@@ -5,6 +5,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     initNavigation();
     initDynamicContent();
+    initCarousel();
 });
 
 // Navigation Logic
@@ -180,3 +181,19 @@ function openLightbox(index) {
 
     document.body.appendChild(modal);
 }
+
+// Carousel Logic
+function initCarousel() {
+    const slides = document.querySelectorAll('.carousel-slide');
+    if (slides.length === 0) return;
+
+    let currentSlide = 0;
+    
+    // Auto slide every 5 seconds
+    setInterval(() => {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+    }, 5000);
+}
+

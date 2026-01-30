@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Behind the Scenes - Tesi & Sano</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Outfit:wght@400;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .video-placeholder {
+            background-color: #000;
+            aspect-ratio: 16/9;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            position: relative;
+        }
+
+        .video-placeholder::after {
+            content: "▶";
+            font-size: 3rem;
+            opacity: 0.7;
+        }
+
+        .bts-image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-sm);
+        }
+
+        .bts-image {
+            background-color: #ddd;
+            aspect-ratio: 4/3;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+
+        .bts-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .bts-image:hover img {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body data-page="behind-the-scenes">
+
+    <!-- Navigation -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo"><img src="https://placehold.co/150x50?text=Tesi+&+Sano"
+                    alt="Tesi & Sano Logo" style="height: 50px;"></a>
+            <div class="menu-toggle">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About the Series</a>
+                <a href="behind-the-scenes.html" class="active">Behind the Scenes</a>
+                <a href="team.html">Team</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Header Section -->
+    <section class="section" style="background-color: #EFEBE9;">
+        <div class="container text-center">
+            <h1 class="section-title">Behind the Scenes</h1>
+            <p style="max-width: 700px; margin: 0 auto; font-style: italic;">"Making Tesi & Sano: A journey into the
+                craft of environmental storytelling."</p>
+        </div>
+    </section>
+
+    <!-- Videos Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Behind the Scenes – Videos</h2>
+            <div class="video-grid">
+                <div class="video-placeholder" title="Documentary Part 1"></div>
+                <div class="video-placeholder" title="Animation Process"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Images Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Behind the Scenes – Images</h2>
+            <div class="bts-image-grid">
+                <div class="bts-image"><img src="https://placehold.co/600x450/e0e0e0/333?text=Concept+Art+1"
+                        alt="Concept Art"></div>
+                <div class="bts-image"><img src="https://placehold.co/600x450/e0e0e0/333?text=Studio+Session"
+                        alt="Studio"></div>
+                <div class="bts-image"><img src="https://placehold.co/600x450/e0e0e0/333?text=Storyboards"
+                        alt="Storyboards"></div>
+                <div class="bts-image"><img src="https://placehold.co/600x450/e0e0e0/333?text=Character+Design"
+                        alt="Design"></div>
+                <div class="bts-image"><img src="https://placehold.co/600x450/e0e0e0/333?text=Background+Art"
+                        alt="Backgrounds"></div>
+                <div class="bts-image"><img src="https://placehold.co/600x450/e0e0e0/333?text=Voice+Recording"
+                        alt="Recording"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div style="font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem;">Tesi & Sano</div>
+            <p>© 2024 Tesi & Sano Series. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

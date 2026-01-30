@@ -2,18 +2,26 @@
 
 :root {
     /* Nature-inspired Palette */
-    --color-primary: #2E7D32; /* Forest Green */
-    --color-primary-light: #81C784; /* Light Green */
-    --color-primary-dark: #1B5E20; /* Dark Green */
-    
-    --color-secondary: #0277BD; /* Sky Blue */
-    --color-secondary-light: #4FC3F7; /* Light Blue */
-    
-    --color-accent: #FFAB00; /* Sunlight Amber */
-    
-    --color-earth: #795548; /* Brown */
-    --color-sand: #FFF8E1; /* Off-white background */
-    
+    --color-primary: #2E7D32;
+    /* Forest Green */
+    --color-primary-light: #81C784;
+    /* Light Green */
+    --color-primary-dark: #1B5E20;
+    /* Dark Green */
+
+    --color-secondary: #0277BD;
+    /* Sky Blue */
+    --color-secondary-light: #4FC3F7;
+    /* Light Blue */
+
+    --color-accent: #FFAB00;
+    /* Sunlight Amber */
+
+    --color-earth: #795548;
+    /* Brown */
+    --color-sand: #FFF8E1;
+    /* Off-white background */
+
     --color-text: #333333;
     --color-text-light: #757575;
     --color-white: #FFFFFF;
@@ -33,11 +41,11 @@
     --radius-sm: 8px;
     --radius-md: 16px;
     --radius-lg: 24px;
-    
+
     /* Shadows */
-    --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
-    --shadow-md: 0 4px 8px rgba(0,0,0,0.1);
-    --shadow-lg: 0 8px 16px rgba(0,0,0,0.15);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
 /* Reset & Base */
@@ -55,7 +63,12 @@ body {
     overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: var(--font-heading);
     color: var(--color-primary-dark);
     line-height: 1.2;
@@ -85,10 +98,21 @@ ul {
     padding: 0 var(--spacing-sm);
 }
 
-.text-center { text-align: center; }
-.mt-sm { margin-top: var(--spacing-sm); }
-.mt-md { margin-top: var(--spacing-md); }
-.mt-lg { margin-top: var(--spacing-lg); }
+.text-center {
+    text-align: center;
+}
+
+.mt-sm {
+    margin-top: var(--spacing-sm);
+}
+
+.mt-md {
+    margin-top: var(--spacing-md);
+}
+
+.mt-lg {
+    margin-top: var(--spacing-lg);
+}
 
 .btn {
     display: inline-block;
@@ -121,7 +145,8 @@ ul {
 }
 
 .btn-secondary:hover {
-    background-color: var(--color-secondary-light); /* Actually lighter on hover for blue usually better, or darker? Standard is darker/more saturated. Let's keep logic simple. */
+    background-color: var(--color-secondary-light);
+    /* Actually lighter on hover for blue usually better, or darker? Standard is darker/more saturated. Let's keep logic simple. */
     filter: brightness(0.9);
 }
 
@@ -151,6 +176,7 @@ header {
 .nav-links {
     display: flex;
     gap: var(--spacing-md);
+    align-items: center;
 }
 
 .nav-links a {
@@ -158,8 +184,45 @@ header {
     font-weight: 600;
 }
 
-.nav-links a:hover, .nav-links a.active {
+.nav-links a:hover,
+.nav-links a.active {
     color: var(--color-primary);
+}
+
+/* Dropdown Menu */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--color-white);
+    min-width: 200px;
+    box-shadow: var(--shadow-md);
+    z-index: 1001;
+    border-radius: var(--radius-sm);
+    padding: 10px 0;
+    top: 100%;
+    left: 0;
+}
+
+.dropdown-content a {
+    color: var(--color-text);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-weight: 400;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+    color: var(--color-primary);
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
 }
 
 /* Mobile Nav Toggle */
@@ -193,7 +256,8 @@ footer p {
 /* Hero Section */
 .hero {
     position: relative;
-    padding: var(--spacing-xl) 0;
+    padding: var(--spacing-md) 0 var(--spacing-lg) 0;
+    /* Reduced top padding */
     background: linear-gradient(135deg, var(--color-sand) 0%, #E8F5E9 100%);
     border-radius: 0 0 var(--radius-lg) var(--radius-lg);
     text-align: center;
@@ -221,23 +285,34 @@ footer p {
     margin-bottom: var(--spacing-md);
 }
 
-.hero-image-placeholder {
+/* Carousel Styles */
+.hero-carousel {
     width: 100%;
-    max-width: 800px;
-    height: 400px;
-    background-color: #ddd;
+    max-width: 1000px;
+    height: 500px;
     margin: 0 auto;
     border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #666;
-    font-size: 1.2rem;
     box-shadow: var(--shadow-lg);
     overflow: hidden;
+    position: relative;
+    background-color: #ddd;
 }
 
-.hero-image-placeholder img {
+.carousel-slide {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.carousel-slide.active {
+    opacity: 1;
+}
+
+.carousel-slide img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -271,7 +346,7 @@ footer p {
     overflow: hidden;
     box-shadow: var(--shadow-sm);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(0,0,0,0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .card:hover {
@@ -325,7 +400,8 @@ footer p {
     font-weight: 600;
 }
 
-.form-group input, .form-group textarea {
+.form-group input,
+.form-group textarea {
     width: 100%;
     padding: 12px;
     border: 1px solid #ddd;
@@ -365,7 +441,7 @@ footer p {
     .hero h1 {
         font-size: 2.5rem;
     }
-    
+
     .grid-container {
         grid-template-columns: 1fr;
     }

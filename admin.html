@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Tesi & Sano</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Outfit:wght@400;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .admin-login {
+            max-width: 400px;
+            margin: 100px auto;
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+        }
+
+        .dashboard {
+            display: none;
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            padding-bottom: 80px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 1rem 2rem;
+            background: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--color-text-light);
+            transition: all 0.3s;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tab-btn.active {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .panel {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .preview-card {
+            margin-top: 2rem;
+            border-top: 2px dashed #eee;
+            padding-top: 2rem;
+        }
+
+        .action-bar {
+            background: var(--color-primary-dark);
+            color: white;
+            padding: 1rem;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 2000;
+        }
+
+        .media-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .media-item {
+            position: relative;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            aspect-ratio: 16/9;
+        }
+
+        .media-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Login -->
+    <div id="login-section" class="admin-login">
+        <h2>Admin Dashboard</h2>
+        <p class="mb-md">Enter password to manage content</p>
+        <div class="form-group"><input type="password" id="password-input" placeholder="Password"></div>
+        <button onclick="checkPassword()" class="btn btn-primary">Login</button>
+        <p id="login-error" style="color: red; margin-top: 10px; display: none;">Incorrect password</p>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard-section" class="dashboard">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h1>Content Manager</h1>
+            <a href="index.html" class="btn btn-secondary">Back to Site</a>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('branding')">Site Branding</button>
+            <button class="tab-btn" onclick="switchTab('media')">Images & Media</button>
+            <button class="tab-btn" onclick="switchTab('character')">Add Character</button>
+            <button class="tab-btn" onclick="switchTab('team')">Add Team Member</button>
+        </div>
+
+        <!-- Branding Panel -->
+        <div id="panel-branding" class="panel active">
+            <h2>Site Visuals</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Logo Image</label>
+                    <input type="text" id="brand-logo-url" placeholder="Enter Image URL or Upload below"
+                        oninput="updateLogoPreview()">
+                    <input type="file" id="brand-logo-file" accept="image/*"
+                        onchange="handleFileUpload(this, 'brand-logo-url', updateLogoPreview)">
+                </div>
+                <div style="background: #eee; padding: 20px; text-align: center; border-radius: 8px;">
+                    <p>Logo Preview:</p>
+                    <img id="logo-preview" src="" style="max-height: 80px; max-width: 100%;">
+                </div>
+                <button onclick="saveBranding()" class="btn btn-primary">Save Branding Settings</button>
+            </div>
+        </div>
+
+        <!-- Images & Media Panel -->
+        <div id="panel-media" class="panel">
+            <h2>Homepage Hero Carousel</h2>
+            <div class="form-group" style="padding: 10px; background: #f9f9f9; border-radius: 8px;">
+                <label>Add New Hero Slide</label>
+                <input type="text" id="hero-url" placeholder="Image URL">
+                <input type="file" id="hero-file" accept="image/*" onchange="handleFileUpload(this, 'hero-url')">
+                <input type="text" id="hero-alt" placeholder="Alt Text / Description" style="margin-top: 5px;">
+                <button onclick="addHeroSlide()" class="btn btn-secondary mt-sm">Add Slide</button>
+            </div>
+            <div id="hero-list" class="media-list"></div>
+
+            <h2 class="mt-md">Behind The Scenes Gallery</h2>
+            <div class="form-group" style="padding: 10px; background: #f9f9f9; border-radius: 8px;">
+                <label>Add New BTS Image</label>
+                <input type="text" id="bts-url" placeholder="Image URL">
+                <input type="file" id="bts-file" accept="image/*" onchange="handleFileUpload(this, 'bts-url')">
+                <input type="text" id="bts-caption" placeholder="Caption" style="margin-top: 5px;">
+                <button onclick="addBTSImage()" class="btn btn-secondary mt-sm">Add Image</button>
+            </div>
+            <div id="bts-list" class="media-list"></div>
+        </div>
+
+        <!-- Character Panel -->
+        <div id="panel-character" class="panel">
+            <h2>New Character</h2>
+            <div class="form-grid">
+                <div class="form-group"><label>Name</label><input type="text" id="char-name"
+                        oninput="updatePreview('character')"></div>
+                <div class="form-group"><label>Role</label><input type="text" id="char-role"
+                        oninput="updatePreview('character')"></div>
+                <div class="form-group">
+                    <label>Image</label>
+                    <input type="text" id="char-image" value="https://placehold.co/400x300"
+                        oninput="updatePreview('character')">
+                    <input type="file" accept="image/*"
+                        onchange="handleFileUpload(this, 'char-image', () => updatePreview('character'))">
+                </div>
+                <div class="form-group"><label>Description</label><textarea id="char-desc"
+                        oninput="updatePreview('character')"></textarea></div>
+                <button onclick="saveItem('character')" class="btn btn-primary">Add to List</button>
+            </div>
+            <div class="preview-card">
+                <h3>Preview</h3>
+                <div class="card" style="max-width: 300px;">
+                    <img id="prev-char-img" src="" class="card-img-top">
+                    <div class="card-body">
+                        <h3 id="prev-char-name">Name</h3>
+                        <p id="prev-char-role">Role</p>
+                        <p id="prev-char-desc">...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Panel -->
+        <div id="panel-team" class="panel">
+            <h2>New Team Member</h2>
+            <div class="form-grid">
+                <div class="form-group"><label>Name</label><input type="text" id="team-name"
+                        oninput="updatePreview('team')"></div>
+                <div class="form-group"><label>Role</label><input type="text" id="team-role"
+                        oninput="updatePreview('team')"></div>
+                <div class="form-group">
+                    <label>Image</label>
+                    <input type="text" id="team-image" value="https://placehold.co/400x300"
+                        oninput="updatePreview('team')">
+                    <input type="file" accept="image/*"
+                        onchange="handleFileUpload(this, 'team-image', () => updatePreview('team'))">
+                </div>
+                <div class="form-group"><label>Bio</label><textarea id="team-bio"
+                        oninput="updatePreview('team')"></textarea></div>
+                <button onclick="saveItem('team')" class="btn btn-primary">Add to List</button>
+            </div>
+            <div class="preview-card">
+                <h3>Preview</h3>
+                <div class="card" style="max-width: 300px;">
+                    <img id="prev-team-img" src="" class="card-img-top">
+                    <div class="card-body">
+                        <h3 id="prev-team-name">Name</h3>
+                        <p id="prev-team-role">Role</p>
+                        <p id="prev-team-bio">...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="action-bar" class="action-bar" style="display: none;">
+        <div><strong>Unsaved Changes:</strong> <span id="change-count">0</span> updates pending.</div>
+        <button onclick="downloadData()" class="btn"
+            style="background: white; color: var(--color-primary-dark);">Download New data.js</button>
+    </div>
+
+    <script src="data.js"></script>
+    <script>
+        const PASSWORD = "admin";
+        let pendingChanges = 0;
+
+        function checkPassword() {
+            if (document.getElementById('password-input').value === PASSWORD) {
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('dashboard-section').style.display = 'block';
+                document.getElementById('action-bar').style.display = 'flex';
+                initDashboard();
+            } else {
+                document.getElementById('login-error').style.display = 'block';
+            }
+        }
+
+        function initDashboard() {
+            if (!window.SITE_DATA) return;
+            // Load Logo
+            if (window.SITE_DATA.siteSettings) {
+                document.getElementById('brand-logo-url').value = window.SITE_DATA.siteSettings.logoUrl || '';
+                updateLogoPreview();
+            }
+            renderMediaLists();
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('panel-' + tab).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // File Handler
+        function handleFileUpload(input, targetId, callback) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById(targetId).value = e.target.result;
+                if (callback) callback();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Branding
+        function updateLogoPreview() {
+            document.getElementById('logo-preview').src = document.getElementById('brand-logo-url').value;
+        }
+        function saveBranding() {
+            if (!window.SITE_DATA.siteSettings) window.SITE_DATA.siteSettings = {};
+            window.SITE_DATA.siteSettings.logoUrl = document.getElementById('brand-logo-url').value;
+            registerChange();
+            alert("Logo updated! Remember to Download data.js");
+        }
+
+        // Media Management
+        function renderMediaLists() {
+            // Hero
+            const heroContainer = document.getElementById('hero-list');
+            heroContainer.innerHTML = '';
+            (window.SITE_DATA.heroImages || []).forEach((img, index) => {
+                heroContainer.innerHTML += `
+                    <div class="media-item">
+                        <img src="${img.src}">
+                        <button class="delete-btn" onclick="deleteHero(${index})">X</button>
+                    </div>`;
+            });
+
+            // BTS
+            const btsContainer = document.getElementById('bts-list');
+            btsContainer.innerHTML = '';
+            const bts = window.SITE_DATA.btsImages || window.SITE_DATA.gallery || [];
+            bts.forEach((img, index) => {
+                btsContainer.innerHTML += `
+                    <div class="media-item">
+                        <img src="${img.src}">
+                        <div style="position: absolute; bottom: 0; background: rgba(0,0,0,0.5); color: white; width: 100%; font-size: 0.8rem; padding: 2px;">${img.caption || ''}</div>
+                        <button class="delete-btn" onclick="deleteBTS(${index})">X</button>
+                    </div>`;
+            });
+        }
+
+        function addHeroSlide() {
+            const src = document.getElementById('hero-url').value;
+            const alt = document.getElementById('hero-alt').value;
+            if (!src) return;
+            if (!window.SITE_DATA.heroImages) window.SITE_DATA.heroImages = [];
+            window.SITE_DATA.heroImages.push({ src, alt });
+            document.getElementById('hero-url').value = '';
+            document.getElementById('hero-file').value = '';
+            renderMediaLists();
+            registerChange();
+        }
+
+        function deleteHero(index) {
+            window.SITE_DATA.heroImages.splice(index, 1);
+            renderMediaLists();
+            registerChange();
+        }
+
+        function addBTSImage() {
+            const src = document.getElementById('bts-url').value;
+            const caption = document.getElementById('bts-caption').value;
+            if (!src) return;
+            // Migrate gallery to btsImages if needed
+            if (!window.SITE_DATA.btsImages && window.SITE_DATA.gallery) {
+                window.SITE_DATA.btsImages = window.SITE_DATA.gallery;
+                delete window.SITE_DATA.gallery;
+            } else if (!window.SITE_DATA.btsImages) {
+                window.SITE_DATA.btsImages = [];
+            }
+
+            window.SITE_DATA.btsImages.push({ src, caption });
+            document.getElementById('bts-url').value = '';
+            document.getElementById('bts-file').value = '';
+            renderMediaLists();
+            registerChange();
+        }
+
+        function deleteBTS(index) {
+            if (window.SITE_DATA.btsImages) window.SITE_DATA.btsImages.splice(index, 1);
+            else if (window.SITE_DATA.gallery) window.SITE_DATA.gallery.splice(index, 1);
+            renderMediaLists();
+            registerChange();
+        }
+
+        // Standard Add Items
+        function updatePreview(type) {
+            if (type === 'character') {
+                document.getElementById('prev-char-name').textContent = document.getElementById('char-name').value;
+                document.getElementById('prev-char-role').textContent = document.getElementById('char-role').value;
+                document.getElementById('prev-char-desc').textContent = document.getElementById('char-desc').value;
+                document.getElementById('prev-char-img').src = document.getElementById('char-image').value;
+            } else {
+                document.getElementById('prev-team-name').textContent = document.getElementById('team-name').value;
+                document.getElementById('prev-team-role').textContent = document.getElementById('team-role').value;
+                document.getElementById('prev-team-bio').textContent = document.getElementById('team-bio').value;
+                document.getElementById('prev-team-img').src = document.getElementById('team-image').value;
+            }
+        }
+
+        function saveItem(type) {
+            const idKey = type === 'character' ? 'characters' : 'team';
+            const newItem = type === 'character' ? {
+                id: 'char_' + Date.now(),
+                name: document.getElementById('char-name').value,
+                role: document.getElementById('char-role').value,
+                image: document.getElementById('char-image').value,
+                shortDesc: document.getElementById('char-desc').value,
+                fullDesc: document.getElementById('char-desc').value
+            } : {
+                id: 'team_' + Date.now(),
+                name: document.getElementById('team-name').value,
+                role: document.getElementById('team-role').value,
+                image: document.getElementById('team-image').value,
+                bio: document.getElementById('team-bio').value
+            };
+
+            window.SITE_DATA[idKey].push(newItem);
+            alert("Item Added!");
+            registerChange();
+        }
+
+        function registerChange() {
+            pendingChanges++;
+            document.getElementById('change-count').textContent = pendingChanges;
+        }
+
+        function downloadData() {
+            const dataString = `window.SITE_DATA = ${JSON.stringify(window.SITE_DATA, null, 4)};`;
+            const blob = new Blob([dataString], { type: 'text/javascript' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'data.js';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            pendingChanges = 0;
+            document.getElementById('change-count').textContent = 0;
+            alert("File downloaded! Please replace your existing 'data.js'.");
+        }
+    </script>
+</body>
+
+</html>

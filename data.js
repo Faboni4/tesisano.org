@@ -12,6 +12,23 @@ const SITE_DATA = {
         missionText: "We believe that understanding our environment is the first step to protecting it. Through engaging storytelling and lovable characters, we aim to inspire the next generation of eco-heroes.",
         contactEmail: "hello@tesiandsano.com"
     },
+    siteSettings: {
+        logoUrl: "https://placehold.co/150x50?text=Tesi+&+Sano"
+    },
+    heroImages: [
+        {
+            src: "https://placehold.co/1000x500/81C784/1B5E20?text=Adventure+Awaits",
+            alt: "Adventure Awaits"
+        },
+        {
+            src: "https://placehold.co/1000x500/0277BD/FFFFFF?text=Protecting+Nature",
+            alt: "Protecting Nature"
+        },
+        {
+            src: "https://placehold.co/1000x500/FFAB00/3E2723?text=Join+Tesi+and+Sano",
+            alt: "Join Tesi and Sano"
+        }
+    ],
     characters: [
         {
             id: "tesi",

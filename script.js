@@ -3,10 +3,22 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+    initGlobalBranding();
     initNavigation();
     initDynamicContent();
     initCarousel();
 });
+
+// Branding Logic
+function initGlobalBranding() {
+    if (typeof window.SITE_DATA === 'undefined') return;
+
+    // Update Logo
+    const logoImg = document.querySelector('.logo img');
+    if (logoImg && window.SITE_DATA.siteSettings && window.SITE_DATA.siteSettings.logoUrl) {
+        logoImg.src = window.SITE_DATA.siteSettings.logoUrl;
+    }
+}
 
 // Navigation Logic
 function initNavigation() {
@@ -41,10 +53,10 @@ function initDynamicContent() {
         renderCharacters();
     } else if (page === 'team') {
         renderTeam();
-    } else if (page === 'gallery') {
-        renderGallery();
+    } else if (page === 'behind-the-scenes') {
+        renderBehindTheScenes();
     } else if (page === 'home') {
-        renderHomeFeatured();
+        renderHeroCarousel();
     }
 }
 
@@ -88,28 +100,38 @@ function renderTeam() {
     });
 }
 
-function renderGallery() {
-    const container = document.getElementById('gallery-grid');
+function renderBehindTheScenes() {
+    const container = document.querySelector('.bts-image-grid');
     if (!container) return;
 
-    window.SITE_DATA.gallery.forEach((item, index) => {
-        const card = document.createElement('div');
-        card.className = 'card gallery-item';
-        card.style.cursor = 'pointer';
-        card.onclick = () => openLightbox(index);
-        card.innerHTML = `
-            <img src="${item.src}" alt="${item.caption}" class="card-img-top">
-            <div class="card-body text-center">
-                <p>${item.caption}</p>
-            </div>
-        `;
-        container.appendChild(card);
+    // Clear existing placeholders
+    container.innerHTML = '';
+
+    const images = window.SITE_DATA.btsImages || window.SITE_DATA.gallery || [];
+
+    images.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'bts-image';
+        div.innerHTML = `<img src="${item.src}" alt="${item.caption || 'BTS Image'}">`;
+        container.appendChild(div);
     });
 }
 
-// Simple Home Page Dynamic injection (optional, but keeps data central)
-function renderHomeFeatured() {
-    // We could inject dynamic "featured" items here if the design called for it
+function renderHeroCarousel() {
+    const container = document.querySelector('.hero-carousel');
+    if (!container) return;
+
+    const images = window.SITE_DATA.heroImages;
+    if (!images || images.length === 0) return;
+
+    container.innerHTML = '';
+
+    images.forEach((img, index) => {
+        const slide = document.createElement('div');
+        slide.className = `carousel-slide ${index === 0 ? 'active' : ''}`;
+        slide.innerHTML = `<img src="${img.src}" alt="${img.alt}">`;
+        container.appendChild(slide);
+    });
 }
 
 // Modal / Detail Logic
@@ -155,7 +177,9 @@ function openDetail(type, id) {
 }
 
 function openLightbox(index) {
-    const images = window.SITE_DATA.gallery;
+    // Gallery/BTS lightbox
+    const images = window.SITE_DATA.btsImages || window.SITE_DATA.gallery;
+    if (!images) return;
     const current = images[index];
 
     const modal = document.createElement('div');
@@ -175,7 +199,7 @@ function openLightbox(index) {
         <div style="position: relative; max-width: 90%; max-height: 90%;">
             <button onclick="this.closest('.lightbox-overlay').remove()" style="position: absolute; top: -40px; right: 0; border: none; background: none; color: white; font-size: 2rem; cursor: pointer;">&times;</button>
             <img src="${current.src}" style="max-width: 100%; max-height: 90vh; border-radius: 4px;">
-            <p style="color: white; text-align: center; margin-top: 10px;">${current.caption}</p>
+            <p style="color: white; text-align: center; margin-top: 10px;">${current.caption || ''}</p>
         </div>
     `;
 
@@ -188,12 +212,14 @@ function initCarousel() {
     if (slides.length === 0) return;
 
     let currentSlide = 0;
-    
+
     // Auto slide every 5 seconds
     setInterval(() => {
-        slides[currentSlide].classList.remove('active');
-        currentSlide = (currentSlide + 1) % slides.length;
-        slides[currentSlide].classList.add('active');
+        const activeSlides = document.querySelectorAll('.carousel-slide');
+        if (activeSlides.length === 0) return;
+
+        activeSlides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % activeSlides.length;
+        activeSlides[currentSlide].classList.add('active');
     }, 5000);
 }
-

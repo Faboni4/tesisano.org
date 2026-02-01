@@ -10,41 +10,123 @@
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        /* Scrollable Video Row */
+        .video-row {
+            display: flex;
             gap: var(--spacing-md);
-            margin-bottom: var(--spacing-lg);
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: var(--spacing-sm) 0;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: var(--color-secondary-light) transparent;
+        }
+
+        .video-row::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .video-row::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 4px;
+        }
+
+        .video-row::-webkit-scrollbar-thumb {
+            background: var(--color-secondary-light);
+            border-radius: 4px;
+        }
+
+        .video-row::-webkit-scrollbar-thumb:hover {
+            background: var(--color-secondary);
         }
 
         .video-placeholder {
+            flex: 0 0 auto;
+            width: 420px;
+            height: 236px;
             background-color: #000;
-            aspect-ratio: 16/9;
             border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             position: relative;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+
+        .video-placeholder:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
         }
 
         .video-placeholder::after {
             content: "▶";
             font-size: 3rem;
             opacity: 0.7;
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
-        .bts-image-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: var(--spacing-sm);
+        .video-placeholder:hover::after {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .video-placeholder .video-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 12px 16px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* Scrollable Image Row */
+        .bts-image-row {
+            display: flex;
+            gap: var(--spacing-md);
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: var(--spacing-sm) 0;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: var(--color-primary-light) transparent;
+        }
+
+        .bts-image-row::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .bts-image-row::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 4px;
+        }
+
+        .bts-image-row::-webkit-scrollbar-thumb {
+            background: var(--color-primary-light);
+            border-radius: 4px;
+        }
+
+        .bts-image-row::-webkit-scrollbar-thumb:hover {
+            background: var(--color-primary);
         }
 
         .bts-image {
-            background-color: #ddd;
-            aspect-ratio: 4/3;
-            border-radius: var(--radius-sm);
+            flex: 0 0 auto;
+            width: 350px;
+            height: 250px;
+            border-radius: var(--radius-md);
             overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .bts-image:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
         }
 
         .bts-image img {
@@ -66,7 +148,7 @@
     <header>
         <div class="container nav-container">
             <a href="index.html" class="logo"><img src="https://placehold.co/150x50?text=Tesi+&+Sano"
-                    alt="Tesi & Sano Logo" style="height: 50px;"></a>
+                    alt="Tesi & Sano Logo" style="height: 70px;"></a>
             <div class="menu-toggle">
                 <div class="bar"></div>
                 <div class="bar"></div>
@@ -95,9 +177,25 @@
     <section class="section">
         <div class="container">
             <h2 class="section-title">Behind the Scenes – Videos</h2>
-            <div class="video-grid">
-                <div class="video-placeholder" title="Documentary Part 1"></div>
-                <div class="video-placeholder" title="Animation Process"></div>
+            <div class="video-row">
+                <div class="video-placeholder">
+                    <span class="video-title">Documentary Part 1</span>
+                </div>
+                <div class="video-placeholder">
+                    <span class="video-title">Animation Process</span>
+                </div>
+                <div class="video-placeholder">
+                    <span class="video-title">Voice Recording Session</span>
+                </div>
+                <div class="video-placeholder">
+                    <span class="video-title">Character Design Talk</span>
+                </div>
+                <div class="video-placeholder">
+                    <span class="video-title">Music & Sound Design</span>
+                </div>
+                <div class="video-placeholder">
+                    <span class="video-title">Environmental Research</span>
+                </div>
             </div>
         </div>
     </section>
@@ -106,8 +204,26 @@
     <section class="section">
         <div class="container">
             <h2 class="section-title">Behind the Scenes – Images</h2>
-            <div class="bts-image-grid">
-                <!-- Content injected via script.js -->
+            <div class="bts-image-row">
+                <div class="bts-image">
+                    <img src="https://placehold.co/350x250/81C784/1B5E20?text=Recording+Session"
+                        alt="Recording Session">
+                </div>
+                <div class="bts-image">
+                    <img src="https://placehold.co/350x250/4FC3F7/0277BD?text=Animation+Studio" alt="Animation Studio">
+                </div>
+                <div class="bts-image">
+                    <img src="https://placehold.co/350x250/FFAB00/795548?text=Character+Design" alt="Character Design">
+                </div>
+                <div class="bts-image">
+                    <img src="https://placehold.co/350x250/A5D6A7/2E7D32?text=Storyboarding" alt="Storyboarding">
+                </div>
+                <div class="bts-image">
+                    <img src="https://placehold.co/350x250/90CAF9/1565C0?text=Voice+Acting" alt="Voice Acting">
+                </div>
+                <div class="bts-image">
+                    <img src="https://placehold.co/350x250/FFE082/F57C00?text=Final+Edit" alt="Final Edit">
+                </div>
             </div>
         </div>
     </section>
@@ -117,6 +233,22 @@
         <div class="container">
             <div style="font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem;">Tesi & Sano</div>
             <p>© 2024 Tesi & Sano Series. All rights reserved.</p>
+            <div class="social-icons">
+                <a href="#" aria-label="Instagram" class="social-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="currentColor">
+                        <path
+                            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                    </svg>
+                </a>
+                <a href="#" aria-label="YouTube" class="social-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="currentColor">
+                        <path
+                            d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
+                    </svg>
+                </a>
+            </div>
         </div>
     </footer>
 

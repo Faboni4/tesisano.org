@@ -97,10 +97,11 @@
         }
 
         .media-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            display: flex;
+            flex-wrap: wrap;
             gap: 1rem;
             margin-top: 1rem;
+            justify-content: center;
         }
 
         .media-item {
@@ -109,6 +110,9 @@
             border-radius: 4px;
             overflow: hidden;
             aspect-ratio: 16/9;
+            width: 200px;
+            flex-shrink: 0;
+            background: white;
         }
 
         .media-item img {
@@ -152,9 +156,11 @@
 
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('branding')">Site Branding</button>
-            <button class="tab-btn" onclick="switchTab('media')">Images & Media</button>
-            <button class="tab-btn" onclick="switchTab('character')">Add Character</button>
-            <button class="tab-btn" onclick="switchTab('team')">Add Team Member</button>
+            <button class="tab-btn" onclick="switchTab('media')">Behind the scenes</button>
+            <button class="tab-btn" onclick="switchTab('home')">Homepage Content</button>
+            <button class="tab-btn" onclick="switchTab('about')">About Page</button>
+            <button class="tab-btn" onclick="switchTab('team')">Team Page</button>
+            <button class="tab-btn" onclick="switchTab('contact')">Contact Page</button>
         </div>
 
         <!-- Branding Panel -->
@@ -176,21 +182,48 @@
             </div>
         </div>
 
-        <!-- Images & Media Panel -->
+        <!-- Behind the Scenes Panel -->
         <div id="panel-media" class="panel">
-            <h2>Homepage Hero Carousel</h2>
-            <div class="form-group" style="padding: 10px; background: #f9f9f9; border-radius: 8px;">
-                <label>Add New Hero Slide</label>
-                <input type="text" id="hero-url" placeholder="Image URL">
-                <input type="file" id="hero-file" accept="image/*" onchange="handleFileUpload(this, 'hero-url')">
-                <input type="text" id="hero-alt" placeholder="Alt Text / Description" style="margin-top: 5px;">
-                <button onclick="addHeroSlide()" class="btn btn-secondary mt-sm">Add Slide</button>
-            </div>
-            <div id="hero-list" class="media-list"></div>
+            <h2>Behind the Scenes Page Content</h2>
 
-            <h2 class="mt-md">Behind The Scenes Gallery</h2>
+            <div class="form-grid mb-md">
+                <div class="form-group">
+                    <label>Main Header Title</label>
+                    <input type="text" id="bts-p-title" placeholder="Behind the Scenes">
+                </div>
+                <div class="form-group">
+                    <label>Header Description (Quote)</label>
+                    <textarea id="bts-p-desc" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Videos Section Title</label>
+                    <input type="text" id="bts-p-vid-title" placeholder="Behind the Scenes – Videos">
+                </div>
+                <div class="form-group">
+                    <label>Images Section Title</label>
+                    <input type="text" id="bts-p-img-title" placeholder="Behind the Scenes – Images">
+                </div>
+                <button onclick="saveBTSPage()" class="btn btn-primary">Save Page Text</button>
+            </div>
+
+            <hr style="margin: 2rem 0; border: 0; border-top: 1px solid #eee;">
+
+            <h3>Video Gallery</h3>
+            <div class="form-group"
+                style="padding: 10px; background: #f9f9f9; border-radius: 8px; margin-bottom: 1rem;">
+                <label>Add New Video Link</label>
+                <input type="text" id="bts-vid-url"
+                    placeholder="YouTube URL (e.g. https://www.youtube.com/watch?v=...)">
+                <input type="text" id="bts-vid-title" placeholder="Video Title" style="margin-top: 5px;">
+                <button onclick="addBTSVideo()" class="btn btn-secondary mt-sm">Add Video</button>
+            </div>
+            <div id="bts-video-list" class="media-list" style="margin-bottom: 2rem;"></div>
+
+            <hr style="margin: 2rem 0; border: 0; border-top: 1px solid #eee;">
+
+            <h3>Image Gallery</h3>
             <div class="form-group" style="padding: 10px; background: #f9f9f9; border-radius: 8px;">
-                <label>Add New BTS Image</label>
+                <label>Add New Image</label>
                 <input type="text" id="bts-url" placeholder="Image URL">
                 <input type="file" id="bts-file" accept="image/*" onchange="handleFileUpload(this, 'bts-url')">
                 <input type="text" id="bts-caption" placeholder="Caption" style="margin-top: 5px;">
@@ -199,56 +232,197 @@
             <div id="bts-list" class="media-list"></div>
         </div>
 
-        <!-- Character Panel -->
-        <div id="panel-character" class="panel">
-            <h2>New Character</h2>
-            <div class="form-grid">
-                <div class="form-group"><label>Name</label><input type="text" id="char-name"
-                        oninput="updatePreview('character')"></div>
-                <div class="form-group"><label>Role</label><input type="text" id="char-role"
-                        oninput="updatePreview('character')"></div>
-                <div class="form-group">
-                    <label>Image</label>
-                    <input type="text" id="char-image" value="https://placehold.co/400x300"
-                        oninput="updatePreview('character')">
-                    <input type="file" accept="image/*"
-                        onchange="handleFileUpload(this, 'char-image', () => updatePreview('character'))">
+        <!-- Homepage Panel -->
+        <div id="panel-home" class="panel">
+            <h2>Homepage Content</h2>
+
+            <div
+                style="background: #fdfdfd; padding: 1.5rem; border: 1px solid #eee; border-radius: 12px; margin-bottom: 2rem;">
+                <h3>Homepage Hero Carousel</h3>
+                <p style="font-size: 0.9rem; color: #666; margin-bottom: 1rem;">Upload large high-quality images for the
+                    main slider.</p>
+                <div class="form-group"
+                    style="padding: 10px; background: #fff; border: 1px solid #ddd; border-radius: 8px;">
+                    <label>Add New Hero Slide</label>
+                    <input type="text" id="hero-url" placeholder="Image URL">
+                    <input type="file" id="hero-file" accept="image/*" onchange="handleFileUpload(this, 'hero-url')">
+                    <input type="text" id="hero-alt" placeholder="Alt Text / Description" style="margin-top: 5px;">
+                    <button onclick="addHeroSlide()" class="btn btn-secondary mt-sm">Add Slide to Carousel</button>
                 </div>
-                <div class="form-group"><label>Description</label><textarea id="char-desc"
-                        oninput="updatePreview('character')"></textarea></div>
-                <button onclick="saveItem('character')" class="btn btn-primary">Add to List</button>
+                <div id="hero-list" class="media-list"></div>
             </div>
-            <div class="preview-card">
-                <h3>Preview</h3>
-                <div class="card" style="max-width: 300px;">
-                    <img id="prev-char-img" src="" class="card-img-top">
-                    <div class="card-body">
-                        <h3 id="prev-char-name">Name</h3>
-                        <p id="prev-char-role">Role</p>
-                        <p id="prev-char-desc">...</p>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Hero Title</label>
+                    <input type="text" id="home-hero-title" placeholder="Tesi & Sano">
+                </div>
+                <div class="form-group">
+                    <label>Hero Tagline</label>
+                    <input type="text" id="home-hero-tagline" placeholder="A journey to save our planet...">
+                </div>
+                <div class="form-group">
+                    <label>Story Section Title</label>
+                    <input type="text" id="home-story-title" placeholder="The Story">
+                </div>
+                <div class="form-group">
+                    <label>Story Description</label>
+                    <textarea id="home-story-desc" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Mission Title</label>
+                    <input type="text" id="home-mission-title" placeholder="Why This Series Matters">
+                </div>
+                <div class="form-group">
+                    <label>Mission Description</label>
+                    <textarea id="home-mission-desc" rows="4"></textarea>
+                </div>
+
+                <hr style="grid-column: span 1; margin: 1rem 0; border: 0; border-top: 1px solid #eee;">
+                <h3>Mission Cards (3 Pillars)</h3>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                    <div>
+                        <label>Card 1 Icon</label>
+                        <input type="text" id="home-m1-icon" placeholder="🌱">
+                        <label>Title</label>
+                        <input type="text" id="home-m1-title" placeholder="Nature First">
+                        <label>Desc</label>
+                        <textarea id="home-m1-desc" rows="3"></textarea>
+                    </div>
+                    <div>
+                        <label>Card 2 Icon</label>
+                        <input type="text" id="home-m2-icon" placeholder="🌍">
+                        <label>Title</label>
+                        <input type="text" id="home-m2-title" placeholder="Global Impact">
+                        <label>Desc</label>
+                        <textarea id="home-m2-desc" rows="3"></textarea>
+                    </div>
+                    <div>
+                        <label>Card 3 Icon</label>
+                        <input type="text" id="home-m3-icon" placeholder="💡">
+                        <label>Title</label>
+                        <input type="text" id="home-m3-title" placeholder="Education">
+                        <label>Desc</label>
+                        <textarea id="home-m3-desc" rows="3"></textarea>
                     </div>
                 </div>
+                <hr style="grid-column: span 1; margin: 1rem 0; border: 0; border-top: 1px solid #eee;">
+
+                <div class="form-group">
+                    <label>Trailer Section Title</label>
+                    <input type="text" id="home-trailer-title" placeholder="Watch the Trailer">
+                </div>
+                <div class="form-group">
+                    <label>YouTube/Vimeo Embed Code</label>
+                    <p style="font-size: 0.8rem; color: #666; margin-bottom: 5px;">Paste the &lt;iframe&gt; code from
+                        YouTube "Share" -> "Embed"</p>
+                    <textarea id="home-trailer-embed" rows="6" placeholder="<iframe ...></iframe>"></textarea>
+                </div>
+                <button onclick="saveHome()" class="btn btn-primary">Save Homepage Content</button>
             </div>
         </div>
 
+        <!-- About Page Panel -->
+        <div id="panel-about" class="panel">
+            <h2>About the Series Page Content</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Header Title</label>
+                    <input type="text" id="about-h-title" placeholder="About the Series">
+                </div>
+                <div class="form-group">
+                    <label>Header Description</label>
+                    <textarea id="about-h-desc" rows="2"></textarea>
+                </div>
+
+                <hr style="grid-column: span 1; margin: 1rem 0; border: 0; border-top: 1px solid #eee;">
+                <h3>Overview Section</h3>
+                <div class="form-group">
+                    <label>Overview Image URL</label>
+                    <input type="text" id="about-o-img" placeholder="Image URL">
+                    <input type="file" accept="image/*" onchange="handleFileUpload(this, 'about-o-img')">
+                </div>
+                <div class="form-group">
+                    <label>Overview Title</label>
+                    <input type="text" id="about-o-title" placeholder="A Tale of Hope">
+                </div>
+                <div class="form-group">
+                    <label>Overview Paragraph 1</label>
+                    <textarea id="about-o-p1" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Overview Paragraph 2</label>
+                    <textarea id="about-o-p2" rows="4"></textarea>
+                </div>
+
+                <hr style="grid-column: span 1; margin: 1rem 0; border: 0; border-top: 1px solid #eee;">
+                <h3>Core Themes Section</h3>
+                <div class="form-group">
+                    <label>Section Title</label>
+                    <input type="text" id="about-t-title" placeholder="Core Themes">
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                    <div>
+                        <label>Theme 1 Title</label>
+                        <input type="text" id="about-t1-title" placeholder="Climate Change">
+                        <label>Desc</label>
+                        <textarea id="about-t1-desc" rows="3"></textarea>
+                    </div>
+                    <div>
+                        <label>Theme 2 Title</label>
+                        <input type="text" id="about-t2-title" placeholder="Community">
+                        <label>Desc</label>
+                        <textarea id="about-t2-desc" rows="3"></textarea>
+                    </div>
+                    <div>
+                        <label>Theme 3 Title</label>
+                        <input type="text" id="about-t3-title" placeholder="Responsibility">
+                        <label>Desc</label>
+                        <textarea id="about-t3-desc" rows="3"></textarea>
+                    </div>
+                </div>
+                <button onclick="saveAbout()" class="btn btn-primary mt-md">Save About Page Content</button>
+            </div>
+        </div>
+
+
+
         <!-- Team Panel -->
         <div id="panel-team" class="panel">
-            <h2>New Team Member</h2>
+            <h2>Team Management</h2>
+
+            <div
+                style="background: #fdfdfd; padding: 1.5rem; border: 1px solid #eee; border-radius: 12px; margin-bottom: 2rem;">
+                <h3>Current Team Members</h3>
+                <p style="font-size: 0.9rem; color: #666; margin-bottom: 1rem;">Manage or remove existing team members.
+                </p>
+                <div id="team-list-admin" class="media-list"></div>
+            </div>
+
+            <hr style="margin: 2rem 0; border: 0; border-top: 1px solid #eee;">
+
+            <h3 id="team-form-title">Add New Team Member</h3>
             <div class="form-grid">
                 <div class="form-group"><label>Name</label><input type="text" id="team-name"
                         oninput="updatePreview('team')"></div>
                 <div class="form-group"><label>Role</label><input type="text" id="team-role"
                         oninput="updatePreview('team')"></div>
                 <div class="form-group">
-                    <label>Image</label>
-                    <input type="text" id="team-image" value="https://placehold.co/400x300"
-                        oninput="updatePreview('team')">
+                    <label>Profile Image</label>
+                    <input type="text" id="team-image" placeholder="Image URL" oninput="updatePreview('team')">
                     <input type="file" accept="image/*"
                         onchange="handleFileUpload(this, 'team-image', () => updatePreview('team'))">
                 </div>
-                <div class="form-group"><label>Bio</label><textarea id="team-bio"
-                        oninput="updatePreview('team')"></textarea></div>
-                <button onclick="saveItem('team')" class="btn btn-primary">Add to List</button>
+                <div class="form-group">
+                    <label>Member Bio</label>
+                    <p style="font-size: 0.8rem; color: #666; margin-bottom: 5px;">Viewers will see the first 2 lines in
+                        the grid, and the full text in the "Show More" modal.</p>
+                    <textarea id="team-bio" oninput="updatePreview('team')" rows="6"></textarea>
+                </div>
+                <button id="team-save-btn" onclick="saveItem('team')" class="btn btn-primary">Add Member to
+                    List</button>
+                <button id="team-cancel-btn" onclick="cancelTeamEdit()" class="btn btn-secondary"
+                    style="display: none;">Cancel Edit</button>
             </div>
             <div class="preview-card">
                 <h3>Preview</h3>
@@ -257,29 +431,95 @@
                     <div class="card-body">
                         <h3 id="prev-team-name">Name</h3>
                         <p id="prev-team-role">Role</p>
-                        <p id="prev-team-bio">...</p>
+                        <p id="prev-team-bio" class="line-clamp-2">...</p>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Contact Page Panel -->
+        <div id="panel-contact" class="panel">
+            <h2>Contact Page Content</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Header Title</label>
+                    <input type="text" id="contact-h-title" placeholder="Get in Touch">
+                </div>
+                <div class="form-group">
+                    <label>Header Description</label>
+                    <textarea id="contact-h-desc" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Direct Contact Email</label>
+                    <input type="text" id="contact-email" placeholder="hello@tesiandsano.com">
+                </div>
+                <button onclick="saveContact()" class="btn btn-primary">Save Contact Page Content</button>
             </div>
         </div>
     </div>
 
     <div id="action-bar" class="action-bar" style="display: none;">
-        <div><strong>Unsaved Changes:</strong> <span id="change-count">0</span> updates pending.</div>
-        <button onclick="downloadData()" class="btn"
-            style="background: white; color: var(--color-primary-dark);">Download New data.js</button>
+        <div><span id="save-status">Ready to make changes</span></div>
+        <div style="display: flex; gap: 10px;">
+            <button onclick="saveToIndexedDB()" class="btn" style="background: #4CAF50; color: white;">💾 Save
+                Changes</button>
+            <button onclick="downloadData()" class="btn" style="background: white; color: var(--color-primary-dark);">⬇️
+                Download Backup</button>
+        </div>
     </div>
 
     <script src="data.js"></script>
     <script>
         const PASSWORD = "admin";
-        let pendingChanges = 0;
+        const DB_NAME = 'TesiSanoDB';
+        const STORE_NAME = 'siteData';
+        let hasUnsavedChanges = false;
+        let editingTeamIndex = null;
 
-        function checkPassword() {
+        // Load saved data from IndexedDB on page load
+        async function loadSavedData() {
+            return new Promise((resolve) => {
+                const request = indexedDB.open(DB_NAME, 1);
+
+                request.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME);
+                    }
+                };
+
+                request.onsuccess = (e) => {
+                    const db = e.target.result;
+                    const transaction = db.transaction(STORE_NAME, 'readonly');
+                    const store = transaction.objectStore(STORE_NAME);
+                    const getRequest = store.get('current');
+
+                    getRequest.onsuccess = () => {
+                        if (getRequest.result) {
+                            window.SITE_DATA = getRequest.result;
+                            console.log('✅ Admin: Loaded saved data from IndexedDB');
+                        }
+                        resolve();
+                    };
+                    getRequest.onerror = () => {
+                        console.error('❌ Error reading from IndexedDB');
+                        resolve();
+                    };
+                };
+
+                request.onerror = () => {
+                    console.error('❌ Error opening IndexedDB');
+                    resolve();
+                };
+            });
+        }
+
+        async function checkPassword() {
             if (document.getElementById('password-input').value === PASSWORD) {
                 document.getElementById('login-section').style.display = 'none';
                 document.getElementById('dashboard-section').style.display = 'block';
                 document.getElementById('action-bar').style.display = 'flex';
+                await loadSavedData(); // Ensure we have the latest data before initializing dashboard
                 initDashboard();
             } else {
                 document.getElementById('login-error').style.display = 'block';
@@ -293,7 +533,180 @@
                 document.getElementById('brand-logo-url').value = window.SITE_DATA.siteSettings.logoUrl || '';
                 updateLogoPreview();
             }
+
+            // Load Homepage Content
+            if (window.SITE_DATA.homepage) {
+                const home = window.SITE_DATA.homepage;
+                document.getElementById('home-hero-title').value = home.heroTitle || '';
+                document.getElementById('home-hero-tagline').value = home.heroTagline || '';
+                document.getElementById('home-story-title').value = home.storyTitle || '';
+                document.getElementById('home-story-desc').value = home.storyDesc || '';
+                document.getElementById('home-mission-title').value = home.missionTitle || '';
+                document.getElementById('home-mission-desc').value = home.missionDesc || '';
+
+                document.getElementById('home-m1-icon').value = home.missionItem1Icon || '';
+                document.getElementById('home-m1-title').value = home.missionItem1Title || '';
+                document.getElementById('home-m1-desc').value = home.missionItem1Desc || '';
+
+                document.getElementById('home-m2-icon').value = home.missionItem2Icon || '';
+                document.getElementById('home-m2-title').value = home.missionItem2Title || '';
+                document.getElementById('home-m2-desc').value = home.missionItem2Desc || '';
+
+                document.getElementById('home-m3-icon').value = home.missionItem3Icon || '';
+                document.getElementById('home-m3-title').value = home.missionItem3Title || '';
+                document.getElementById('home-m3-desc').value = home.missionItem3Desc || '';
+
+                document.getElementById('home-trailer-title').value = home.trailerTitle || '';
+                document.getElementById('home-trailer-embed').value = home.trailerEmbed || '';
+            }
+
+            // Load About Page Content
+            if (window.SITE_DATA.aboutPage) {
+                const about = window.SITE_DATA.aboutPage;
+                document.getElementById('about-h-title').value = about.headerTitle || '';
+                document.getElementById('about-h-desc').value = about.headerDesc || '';
+                document.getElementById('about-o-img').value = about.overviewImg || '';
+                document.getElementById('about-o-title').value = about.overviewTitle || '';
+                document.getElementById('about-o-p1').value = about.overviewP1 || '';
+                document.getElementById('about-o-p2').value = about.overviewP2 || '';
+                document.getElementById('about-t-title').value = about.themesTitle || '';
+                document.getElementById('about-t1-title').value = about.theme1Title || '';
+                document.getElementById('about-t1-desc').value = about.theme1Desc || '';
+                document.getElementById('about-t2-title').value = about.theme2Title || '';
+                document.getElementById('about-t2-desc').value = about.theme2Desc || '';
+                document.getElementById('about-t3-title').value = about.theme3Title || '';
+                document.getElementById('about-t3-desc').value = about.theme3Desc || '';
+            }
+
+            // Load Contact Page Content
+            if (window.SITE_DATA.contactPage) {
+                const contact = window.SITE_DATA.contactPage;
+                document.getElementById('contact-h-title').value = contact.headerTitle || '';
+                document.getElementById('contact-h-desc').value = contact.headerDesc || '';
+                document.getElementById('contact-email').value = contact.directEmail || '';
+            }
+
             renderMediaLists();
+            renderBTSVideoList();
+            renderTeamListAdmin();
+            updateStatus('Ready - All changes will auto-save when you click Save');
+        }
+
+        function saveBTSPage() {
+            if (!window.SITE_DATA.btsPage) window.SITE_DATA.btsPage = {};
+            const bts = window.SITE_DATA.btsPage;
+            bts.title = document.getElementById('bts-p-title').value;
+            bts.description = document.getElementById('bts-p-desc').value;
+            bts.videoSectionTitle = document.getElementById('bts-p-vid-title').value;
+            bts.imageSectionTitle = document.getElementById('bts-p-img-title').value;
+
+            markUnsaved();
+            alert("Behind the Scenes page text updated!");
+        }
+
+        function saveContact() {
+            if (!window.SITE_DATA.contactPage) window.SITE_DATA.contactPage = {};
+            const contact = window.SITE_DATA.contactPage;
+            contact.headerTitle = document.getElementById('contact-h-title').value;
+            contact.headerDesc = document.getElementById('contact-h-desc').value;
+            contact.directEmail = document.getElementById('contact-email').value;
+
+            markUnsaved();
+            alert("Contact page content updated! Click 'Save Changes' at the bottom to apply globally.");
+        }
+
+        function saveHome() {
+            if (!window.SITE_DATA.homepage) window.SITE_DATA.homepage = {};
+            const home = window.SITE_DATA.homepage;
+            home.heroTitle = document.getElementById('home-hero-title').value;
+            home.heroTagline = document.getElementById('home-hero-tagline').value;
+            home.storyTitle = document.getElementById('home-story-title').value;
+            home.storyDesc = document.getElementById('home-story-desc').value;
+            home.missionTitle = document.getElementById('home-mission-title').value;
+            home.missionDesc = document.getElementById('home-mission-desc').value;
+
+            home.missionItem1Icon = document.getElementById('home-m1-icon').value;
+            home.missionItem1Title = document.getElementById('home-m1-title').value;
+            home.missionItem1Desc = document.getElementById('home-m1-desc').value;
+
+            home.missionItem2Icon = document.getElementById('home-m2-icon').value;
+            home.missionItem2Title = document.getElementById('home-m2-title').value;
+            home.missionItem2Desc = document.getElementById('home-m2-desc').value;
+
+            home.missionItem3Icon = document.getElementById('home-m3-icon').value;
+            home.missionItem3Title = document.getElementById('home-m3-title').value;
+            home.missionItem3Desc = document.getElementById('home-m3-desc').value;
+
+            home.trailerTitle = document.getElementById('home-trailer-title').value;
+            home.trailerEmbed = document.getElementById('home-trailer-embed').value;
+
+            markUnsaved();
+            alert("Homepage content updated! Click 'Save Changes' at the bottom to apply globally.");
+        }
+
+        function saveAbout() {
+            if (!window.SITE_DATA.aboutPage) window.SITE_DATA.aboutPage = {};
+            const about = window.SITE_DATA.aboutPage;
+            about.headerTitle = document.getElementById('about-h-title').value;
+            about.headerDesc = document.getElementById('about-h-desc').value;
+            about.overviewImg = document.getElementById('about-o-img').value;
+            about.overviewTitle = document.getElementById('about-o-title').value;
+            about.overviewP1 = document.getElementById('about-o-p1').value;
+            about.overviewP2 = document.getElementById('about-o-p2').value;
+            about.themesTitle = document.getElementById('about-t-title').value;
+            about.theme1Title = document.getElementById('about-t1-title').value;
+            about.theme1Desc = document.getElementById('about-t1-desc').value;
+            about.theme2Title = document.getElementById('about-t2-title').value;
+            about.theme2Desc = document.getElementById('about-t2-desc').value;
+            about.theme3Title = document.getElementById('about-t3-title').value;
+            about.theme3Desc = document.getElementById('about-t3-desc').value;
+
+            markUnsaved();
+            alert("About page content updated! Click 'Save Changes' at the bottom to apply globally.");
+        }
+
+        // === INDEXEDDB SAVE/LOAD ===
+        async function saveToIndexedDB() {
+            const btn = event.target;
+            try {
+                updateStatus('⏳ Saving to database...');
+                const request = indexedDB.open(DB_NAME, 1);
+
+                request.onsuccess = (e) => {
+                    const db = e.target.result;
+                    const transaction = db.transaction(STORE_NAME, 'readwrite');
+                    const store = transaction.objectStore(STORE_NAME);
+                    const putRequest = store.put(window.SITE_DATA, 'current');
+
+                    putRequest.onsuccess = () => {
+                        hasUnsavedChanges = false;
+                        updateStatus('✅ Saved successfully! Changes will appear on all pages.');
+
+                        // Flash the button green
+                        btn.style.background = '#2E7D32';
+                        setTimeout(() => btn.style.background = '#4CAF50', 500);
+                    };
+
+                    putRequest.onerror = (err) => {
+                        updateStatus('❌ Error saving: ' + err.target.error.message);
+                    };
+                };
+
+                request.onerror = (err) => {
+                    updateStatus('❌ Error opening DB: ' + err.target.error.message);
+                };
+            } catch (e) {
+                updateStatus('❌ Error saving: ' + e.message);
+            }
+        }
+
+        function updateStatus(message) {
+            document.getElementById('save-status').textContent = message;
+        }
+
+        function markUnsaved() {
+            hasUnsavedChanges = true;
+            updateStatus('⚠️ You have unsaved changes - Click "Save Changes" to apply');
         }
 
         function switchTab(tab) {
@@ -322,35 +735,93 @@
         function saveBranding() {
             if (!window.SITE_DATA.siteSettings) window.SITE_DATA.siteSettings = {};
             window.SITE_DATA.siteSettings.logoUrl = document.getElementById('brand-logo-url').value;
-            registerChange();
-            alert("Logo updated! Remember to Download data.js");
+            markUnsaved();
+            alert("Logo updated! Click 'Save Changes' to apply.");
         }
 
         // Media Management
         function renderMediaLists() {
             // Hero
             const heroContainer = document.getElementById('hero-list');
-            heroContainer.innerHTML = '';
-            (window.SITE_DATA.heroImages || []).forEach((img, index) => {
-                heroContainer.innerHTML += `
-                    <div class="media-item">
-                        <img src="${img.src}">
-                        <button class="delete-btn" onclick="deleteHero(${index})">X</button>
-                    </div>`;
-            });
+            if (heroContainer) {
+                heroContainer.innerHTML = '';
+                (window.SITE_DATA.heroImages || []).forEach((img, index) => {
+                    heroContainer.innerHTML += `
+                        <div class="media-item">
+                            <img src="${img.src}">
+                            <button class="delete-btn" onclick="deleteHero(${index})">X</button>
+                        </div>`;
+                });
+            }
 
-            // BTS
+            // BTS Images
             const btsContainer = document.getElementById('bts-list');
-            btsContainer.innerHTML = '';
-            const bts = window.SITE_DATA.btsImages || window.SITE_DATA.gallery || [];
-            bts.forEach((img, index) => {
-                btsContainer.innerHTML += `
-                    <div class="media-item">
-                        <img src="${img.src}">
-                        <div style="position: absolute; bottom: 0; background: rgba(0,0,0,0.5); color: white; width: 100%; font-size: 0.8rem; padding: 2px;">${img.caption || ''}</div>
-                        <button class="delete-btn" onclick="deleteBTS(${index})">X</button>
+            if (btsContainer) {
+                btsContainer.innerHTML = '';
+                const bts = window.SITE_DATA.btsImages || window.SITE_DATA.gallery || [];
+                bts.forEach((img, index) => {
+                    btsContainer.innerHTML += `
+                        <div class="media-item">
+                            <img src="${img.src}">
+                            <div style="position: absolute; bottom: 0; background: rgba(0,0,0,0.5); color: white; width: 100%; font-size: 0.8rem; padding: 2px;">${img.caption || ''}</div>
+                            <button class="delete-btn" onclick="deleteBTS(${index})">X</button>
+                        </div>`;
+                });
+            }
+        }
+
+        function renderBTSVideoList() {
+            const container = document.getElementById('bts-video-list');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (!window.SITE_DATA.btsPage) window.SITE_DATA.btsPage = { videos: [] };
+            if (!window.SITE_DATA.btsPage.videos) window.SITE_DATA.btsPage.videos = [];
+
+            window.SITE_DATA.btsPage.videos.forEach((vid, index) => {
+                let thumb = 'https://placehold.co/150x84/000/fff?text=No+Thumb';
+
+                if (vid.url.includes('youtube.com') || vid.url.includes('youtu.be')) {
+                    let videoId = '';
+                    if (vid.url.includes('v=')) videoId = vid.url.split('v=')[1].split('&')[0];
+                    else if (vid.url.includes('be/')) videoId = vid.url.split('be/')[1].split('?')[0];
+                    if (videoId) thumb = `https://img.youtube.com/vi/${videoId}/default.jpg`;
+                } else if (vid.url.includes('vimeo.com')) {
+                    const vimeoId = vid.url.split('/').pop().split('?')[0];
+                    if (vimeoId) thumb = `https://vumbnail.com/${vimeoId}.jpg`;
+                }
+
+                container.innerHTML += `
+                    <div class="media-item" style="aspect-ratio: auto; height: 120px;">
+                        <img src="${thumb}" style="height: 60px; object-fit: cover;">
+                        <div style="padding: 5px; font-size: 0.8rem;">
+                            <strong>${vid.title}</strong><br>
+                            <span style="font-size: 0.7rem; color: #666; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${vid.url}</span>
+                        </div>
+                        <button class="delete-btn" onclick="deleteBTSVideo(${index})">X</button>
                     </div>`;
             });
+        }
+
+        function addBTSVideo() {
+            const url = document.getElementById('bts-vid-url').value;
+            const title = document.getElementById('bts-vid-title').value;
+            if (!url || !title) return;
+
+            if (!window.SITE_DATA.btsPage) window.SITE_DATA.btsPage = { videos: [] };
+            if (!window.SITE_DATA.btsPage.videos) window.SITE_DATA.btsPage.videos = [];
+
+            window.SITE_DATA.btsPage.videos.push({ url, title });
+            document.getElementById('bts-vid-url').value = '';
+            document.getElementById('bts-vid-title').value = '';
+            renderBTSVideoList();
+            markUnsaved();
+        }
+
+        function deleteBTSVideo(index) {
+            window.SITE_DATA.btsPage.videos.splice(index, 1);
+            renderBTSVideoList();
+            markUnsaved();
         }
 
         function addHeroSlide() {
@@ -426,17 +897,103 @@
                 name: document.getElementById('team-name').value,
                 role: document.getElementById('team-role').value,
                 image: document.getElementById('team-image').value,
-                bio: document.getElementById('team-bio').value
+                bio: document.getElementById('team-bio').value,
+                fullBio: document.getElementById('team-bio').value
             };
 
-            window.SITE_DATA[idKey].push(newItem);
-            alert("Item Added!");
+            if (!window.SITE_DATA[idKey]) window.SITE_DATA[idKey] = [];
+
+            if (type === 'team' && editingTeamIndex !== null) {
+                // Update existing
+                const existingId = window.SITE_DATA.team[editingTeamIndex].id;
+                newItem.id = existingId; // Keep same ID
+                window.SITE_DATA.team[editingTeamIndex] = newItem;
+                alert("Member Updated!");
+                editingTeamIndex = null;
+                document.getElementById('team-form-title').textContent = "Add New Team Member";
+                document.getElementById('team-save-btn').textContent = "Add Member to List";
+                document.getElementById('team-cancel-btn').style.display = 'none';
+            } else {
+                // Add new
+                window.SITE_DATA[idKey].push(newItem);
+                alert("Member Added!");
+            }
+
+            // Clear inputs
+            if (type === 'team') {
+                document.getElementById('team-name').value = '';
+                document.getElementById('team-role').value = '';
+                document.getElementById('team-image').value = '';
+                document.getElementById('team-bio').value = '';
+                renderTeamListAdmin();
+            }
+
+            alert("Changes staged! Click 'Save Changes' at the bottom to apply globally.");
             registerChange();
         }
 
+        function editTeamMember(index) {
+            editingTeamIndex = index;
+            const member = window.SITE_DATA.team[index];
+
+            document.getElementById('team-name').value = member.name;
+            document.getElementById('team-role').value = member.role;
+            document.getElementById('team-image').value = member.image;
+            document.getElementById('team-bio').value = member.bio;
+
+            document.getElementById('team-form-title').textContent = "Edit Team Member";
+            document.getElementById('team-save-btn').textContent = "Update Member";
+            document.getElementById('team-cancel-btn').style.display = 'inline-block';
+
+            updatePreview('team');
+            window.scrollTo({ top: document.getElementById('team-form-title').offsetTop - 100, behavior: 'smooth' });
+        }
+
+        function cancelTeamEdit() {
+            editingTeamIndex = null;
+            document.getElementById('team-name').value = '';
+            document.getElementById('team-role').value = '';
+            document.getElementById('team-image').value = '';
+            document.getElementById('team-bio').value = '';
+
+            document.getElementById('team-form-title').textContent = "Add New Team Member";
+            document.getElementById('team-save-btn').textContent = "Add Member to List";
+            document.getElementById('team-cancel-btn').style.display = 'none';
+            updatePreview('team');
+        }
+
+        function renderTeamListAdmin() {
+            const container = document.getElementById('team-list-admin');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const team = window.SITE_DATA.team || [];
+            team.forEach((member, index) => {
+                container.innerHTML += `
+                    <div class="media-item" style="aspect-ratio: auto; height: auto; padding-bottom: 10px; background: #fff;">
+                        <img src="${member.image}" style="height: 120px; object-fit: cover; width: 100%;">
+                        <div style="padding: 10px; font-size: 0.85rem;">
+                            <strong>${member.name}</strong><br>
+                            <span style="color: var(--color-secondary); font-weight: 600;">${member.role}</span>
+                        </div>
+                        <div style="display: flex; gap: 5px; position: absolute; top: 5px; right: 5px;">
+                            <button class="btn" style="padding: 4px 8px; font-size: 0.7rem; background: var(--color-secondary); color: white;" onclick="editTeamMember(${index})">Edit</button>
+                            <button class="delete-btn" style="position: static;" onclick="deleteTeamMember(${index})">X</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function deleteTeamMember(index) {
+            if (confirm("Are you sure you want to remove this team member?")) {
+                window.SITE_DATA.team.splice(index, 1);
+                renderTeamListAdmin();
+                markUnsaved();
+            }
+        }
+
         function registerChange() {
-            pendingChanges++;
-            document.getElementById('change-count').textContent = pendingChanges;
+            markUnsaved();
         }
 
         function downloadData() {

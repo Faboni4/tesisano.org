@@ -13,6 +13,7 @@
         /* Scrollable Video Row */
         .video-row {
             display: flex;
+            justify-content: center;
             gap: var(--spacing-md);
             overflow-x: auto;
             scroll-behavior: smooth;
@@ -20,6 +21,12 @@
             -webkit-overflow-scrolling: touch;
             scrollbar-width: thin;
             scrollbar-color: var(--color-secondary-light) transparent;
+        }
+
+        /* Ensure left alignment if scrolling is needed */
+        .video-row:after {
+            content: '';
+            flex: 0 0 1px;
         }
 
         .video-row::-webkit-scrollbar {
@@ -87,6 +94,7 @@
         /* Scrollable Image Row */
         .bts-image-row {
             display: flex;
+            justify-content: center;
             gap: var(--spacing-md);
             overflow-x: auto;
             scroll-behavior: smooth;
@@ -167,8 +175,9 @@
     <!-- Header Section -->
     <section class="section" style="background-color: #EFEBE9;">
         <div class="container text-center">
-            <h1 class="section-title">Behind the Scenes</h1>
-            <p style="max-width: 700px; margin: 0 auto; font-style: italic;">"Making Tesi & Sano: A journey into the
+            <h1 id="bts-header-title" class="section-title">Behind the Scenes</h1>
+            <p id="bts-header-desc" style="max-width: 700px; margin: 0 auto; font-style: italic;">"Making Tesi & Sano: A
+                journey into the
                 craft of environmental storytelling."</p>
         </div>
     </section>
@@ -176,25 +185,11 @@
     <!-- Videos Section -->
     <section class="section">
         <div class="container">
-            <h2 class="section-title">Behind the Scenes – Videos</h2>
-            <div class="video-row">
+            <h2 id="bts-video-section-title" class="section-title">Behind the Scenes – Videos</h2>
+            <div class="video-row" id="bts-video-grid">
+                <!-- Dynamic videos injected here -->
                 <div class="video-placeholder">
                     <span class="video-title">Documentary Part 1</span>
-                </div>
-                <div class="video-placeholder">
-                    <span class="video-title">Animation Process</span>
-                </div>
-                <div class="video-placeholder">
-                    <span class="video-title">Voice Recording Session</span>
-                </div>
-                <div class="video-placeholder">
-                    <span class="video-title">Character Design Talk</span>
-                </div>
-                <div class="video-placeholder">
-                    <span class="video-title">Music & Sound Design</span>
-                </div>
-                <div class="video-placeholder">
-                    <span class="video-title">Environmental Research</span>
                 </div>
             </div>
         </div>
@@ -203,8 +198,9 @@
     <!-- Images Section -->
     <section class="section">
         <div class="container">
-            <h2 class="section-title">Behind the Scenes – Images</h2>
-            <div class="bts-image-row">
+            <h2 id="bts-image-section-title" class="section-title">Behind the Scenes – Images</h2>
+            <div class="bts-image-row" id="bts-image-grid">
+                <!-- Dynamic images will be injected here -->
                 <div class="bts-image">
                     <img src="https://placehold.co/350x250/81C784/1B5E20?text=Recording+Session"
                         alt="Recording Session">
@@ -252,6 +248,7 @@
         </div>
     </footer>
 
+    <script src="data.js"></script>
     <script src="script.js"></script>
 </body>
 

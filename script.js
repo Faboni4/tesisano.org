@@ -142,8 +142,6 @@ function renderTeam() {
                 <div class="card-body">
                     <h3 class="card-title">${member.name}</h3>
                     <p class="card-role">${member.role}</p>
-                    <p class="line-clamp-2">${member.bio}</p>
-                    <button class="btn btn-secondary mt-sm" onclick="openDetail('team', '${member.id}')">Show More</button>
                 </div>
             `;
             container.appendChild(card);

@@ -413,12 +413,6 @@
                     <input type="file" accept="image/*"
                         onchange="handleFileUpload(this, 'team-image', () => updatePreview('team'))">
                 </div>
-                <div class="form-group">
-                    <label>Member Bio</label>
-                    <p style="font-size: 0.8rem; color: #666; margin-bottom: 5px;">Viewers will see the first 2 lines in
-                        the grid, and the full text in the "Show More" modal.</p>
-                    <textarea id="team-bio" oninput="updatePreview('team')" rows="6"></textarea>
-                </div>
                 <button id="team-save-btn" onclick="saveItem('team')" class="btn btn-primary">Add Member to
                     List</button>
                 <button id="team-cancel-btn" onclick="cancelTeamEdit()" class="btn btn-secondary"
@@ -431,7 +425,6 @@
                     <div class="card-body">
                         <h3 id="prev-team-name">Name</h3>
                         <p id="prev-team-role">Role</p>
-                        <p id="prev-team-bio" class="line-clamp-2">...</p>
                     </div>
                 </div>
             </div>
@@ -878,7 +871,6 @@
             } else {
                 document.getElementById('prev-team-name').textContent = document.getElementById('team-name').value;
                 document.getElementById('prev-team-role').textContent = document.getElementById('team-role').value;
-                document.getElementById('prev-team-bio').textContent = document.getElementById('team-bio').value;
                 document.getElementById('prev-team-img').src = document.getElementById('team-image').value;
             }
         }
@@ -896,9 +888,7 @@
                 id: 'team_' + Date.now(),
                 name: document.getElementById('team-name').value,
                 role: document.getElementById('team-role').value,
-                image: document.getElementById('team-image').value,
-                bio: document.getElementById('team-bio').value,
-                fullBio: document.getElementById('team-bio').value
+                image: document.getElementById('team-image').value
             };
 
             if (!window.SITE_DATA[idKey]) window.SITE_DATA[idKey] = [];
@@ -924,7 +914,6 @@
                 document.getElementById('team-name').value = '';
                 document.getElementById('team-role').value = '';
                 document.getElementById('team-image').value = '';
-                document.getElementById('team-bio').value = '';
                 renderTeamListAdmin();
             }
 
@@ -939,7 +928,6 @@
             document.getElementById('team-name').value = member.name;
             document.getElementById('team-role').value = member.role;
             document.getElementById('team-image').value = member.image;
-            document.getElementById('team-bio').value = member.bio;
 
             document.getElementById('team-form-title').textContent = "Edit Team Member";
             document.getElementById('team-save-btn').textContent = "Update Member";
@@ -954,7 +942,6 @@
             document.getElementById('team-name').value = '';
             document.getElementById('team-role').value = '';
             document.getElementById('team-image').value = '';
-            document.getElementById('team-bio').value = '';
 
             document.getElementById('team-form-title').textContent = "Add New Team Member";
             document.getElementById('team-save-btn').textContent = "Add Member to List";

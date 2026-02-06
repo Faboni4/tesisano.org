@@ -1,6 +1,0 @@
-name = "tesisano"
-pages_build_output_dir = "."
-compatibility_date = "2024-04-01"
-
-# Explicitly exclude the functions folder if it doesn't exist to avoid confusion, though Cloudflare usually handles this automatically.
-# However, ensuring the output directory is "." prevents Cloudflare from defaulting to "public" and missing the root files.

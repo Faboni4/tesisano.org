@@ -1,4 +1,23 @@
 window.SITE_DATA = {
+    "homepage": {
+        "heroTitle": "Tesi & Sano",
+        "heroTagline": "A journey to save our planet, one adventure at a time.",
+        "storyTitle": "The Story",
+        "storyDesc": "In a world where nature's balance is tipping, two unlikely friends, Tesi and Sano, embark on a global adventure to understand climate change and protect their home. Blending humor, heart, and hope, 'Tesi & Sano' explores the beauty of our planet and the power of small actions.",
+        "missionTitle": "Why This Series Matters",
+        "missionDesc": "We believe that understanding our environment is the first step to protecting it. Through engaging storytelling and lovable characters, we aim to inspire the next generation of eco-heroes.",
+        "missionItem1Title": "Nature First",
+        "missionItem1Desc": "Celebrating the beauty of the natural world.",
+        "missionItem1Icon": "🌱",
+        "missionItem2Title": "Global Impact",
+        "missionItem2Desc": "Stories that connect us all through shared challenges.",
+        "missionItem2Icon": "🌍",
+        "missionItem3Title": "Education",
+        "missionItem3Desc": "Learning made fun through adventure and discovery.",
+        "missionItem3Icon": "💡",
+        "trailerTitle": "Watch the Trailer",
+        "trailerEmbed": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/dQw4w9WgXcQ?si=adk\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>"
+    },
     "general": {
         "title": "Tesi & Sano",
         "tagline": "A journey to save our planet, one adventure at a time.",

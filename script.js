@@ -28,6 +28,11 @@ async function initData() {
                     console.log('✅ Loaded saved data from IndexedDB');
                 } else {
                     console.log('ℹ️ Using default data.js (No data in IndexedDB)');
+                    if (window.SITE_DATA) {
+                        console.log('✅ Found window.SITE_DATA from data.js:', window.SITE_DATA);
+                    } else {
+                        console.error('❌ window.SITE_DATA is UNDEFINED even after script load!');
+                    }
                 }
                 resolve();
             };
@@ -275,6 +280,7 @@ function renderHeroCarousel() {
     }
 
     // Render Homepage Text Content
+    console.log('Rendering Homepage Content:', window.SITE_DATA.homepage);
     const home = window.SITE_DATA.homepage || {};
 
     if (home.heroTitle) document.getElementById('hero-title').textContent = home.heroTitle;

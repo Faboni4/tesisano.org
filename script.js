@@ -2,7 +2,7 @@
  * Tesi & Sano - Main Script
  */
 
-const DB_NAME = 'TesiSanoDB';
+const DB_NAME = 'TesiSanoDB_v2';
 const STORE_NAME = 'siteData';
 
 async function initData() {
@@ -78,7 +78,7 @@ function initNavigation() {
     const currentPath = window.location.pathname;
     const links = document.querySelectorAll('.nav-links a');
     links.forEach(link => {
-        if (link.getAttribute('href') === currentPath.split('/').pop() || (currentPath.endsWith('/') && link.getAttribute('href') === 'index.html')) {
+        if (link.getAttribute('href') === currentPath.split('/').pop() || (currentPath.endsWith('/') && link.getAttribute('href') === 'home.html')) {
             link.classList.add('active');
         }
     });
